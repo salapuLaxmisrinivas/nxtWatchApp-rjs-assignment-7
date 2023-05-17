@@ -1,52 +1,62 @@
 import {Component} from 'react'
-import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 
-import ThemeContext from '../../Context/ThemeContext'
 import {
-  LoginContainer,
-  LoginCardContainer,
-  WebsiteLogo,
-  Label,
-  LoginInput,
-  Form,
-  ShowPasswordLabel,
+  LoginFormContainer,
+  FormContainer,
+  LoginWebsiteLogo,
+  InputContainer,
   LoginButton,
-  ErrorMsg,
+  UserNameInputField,
+  PasswordInputField,
+  InputLabel,
+  ShowHideContainer,
+  ErrorMessage,
+  CheckboxInput,
 } from './styledComponents'
 
-class login extends Component {
+class Login extends Component {
   state = {
     username: '',
     password: '',
-    passwordType: 'password',
+    showSubmitError: false,
     errorMsg: '',
-    isError: false,
+    isCheckedPassword: false,
+  }
+
+  onChangeUsername = event => {
+    this.setState({username: event.target.value})
+  }
+
+  onChangePassword = event => {
+    this.setState({password: event.target.value})
   }
 
   onSubmitSuccess = jwtToken => {
     const {history} = this.props
-    Cookies.set('jwt_token', jwtToken, {expires: 30})
+
+    Cookies.set('jwt_token', jwtToken, {
+      expires: 30,
+      path: '/',
+    })
     history.replace('/')
-    this.setState({isError: false})
   }
 
   onSubmitFailure = errorMsg => {
-    this.setState({errorMsg, isError: true})
+    this.setState({showSubmitError: true, errorMsg})
   }
 
-  onSubmit = async event => {
+  submitForm = async event => {
     event.preventDefault()
     const {username, password} = this.state
     const userDetails = {username, password}
-    const apiUrl = 'https://apis.ccbp.in/login'
-
+    const url = 'https://apis.ccbp.in/login'
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
     }
-
-    const response = await fetch(apiUrl, options)
+    const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok === true) {
       this.onSubmitSuccess(data.jwt_token)
@@ -55,85 +65,72 @@ class login extends Component {
     }
   }
 
-  onCheckBox = event => {
-    this.setState({passwordType: event.target.checked ? 'text' : 'password'})
+  onShowHidePassword = () => {
+    this.setState(prev => ({isCheckedPassword: !prev.isCheckedPassword}))
   }
 
-  updateUsername = event => {
-    this.setState({username: event.target.value})
+  renderPasswordField = () => {
+    const {password, isCheckedPassword} = this.state
+    return (
+      <>
+        <InputLabel htmlFor="password">PASSWORD</InputLabel>
+        <PasswordInputField
+          type={isCheckedPassword ? 'text' : 'password'}
+          id="password"
+          value={password}
+          onChange={this.onChangePassword}
+          placeholder="Password"
+        />
+        <ShowHideContainer>
+          <CheckboxInput
+            type="checkbox"
+            id="show-password"
+            checked={isCheckedPassword}
+            onChange={this.onShowHidePassword}
+          />
+          <InputLabel htmlFor="show-password">Show Password</InputLabel>
+        </ShowHideContainer>
+      </>
+    )
   }
 
-  updatePassword = event => {
-    this.setState({password: event.target.value})
+  renderUsernameField = () => {
+    const {username} = this.state
+    return (
+      <>
+        <InputLabel htmlFor="username">USERNAME</InputLabel>
+        <UserNameInputField
+          type="text"
+          id="username"
+          value={username}
+          onChange={this.onChangeUsername}
+          placeholder="Username"
+        />
+      </>
+    )
   }
 
   render() {
-    const {passwordType, username, password, isError, errorMsg} = this.state
-
+    const {showSubmitError, errorMsg} = this.state
     const jwtToken = Cookies.get('jwt_token')
-
     if (jwtToken !== undefined) {
       return <Redirect to="/" />
     }
-
     return (
-      <ThemeContext.Consumer>
-        {value => {
-          const {isDarkTheme} = value
-
-          const websiteLogo = isDarkTheme
-            ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
-            : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
-
-          const theme = isDarkTheme ? 'dark' : 'light'
-
-          return (
-            <LoginContainer theme={theme}>
-              <LoginCardContainer theme={theme}>
-                <WebsiteLogo src={websiteLogo} alt="website logo" />
-                <Form onSubmit={this.onSubmit}>
-                  <Label htmlFor="username" theme={theme}>
-                    USERNAME
-                  </Label>
-                  <LoginInput
-                    type="text"
-                    id="username"
-                    placeholder="Username"
-                    theme={theme}
-                    value={username}
-                    onChange={this.updateUsername}
-                  />
-                  <Label htmlFor="password" theme={theme}>
-                    PASSWORD
-                  </Label>
-                  <LoginInput
-                    type={passwordType}
-                    id="password"
-                    placeholder="Password"
-                    theme={theme}
-                    value={password}
-                    onChange={this.updatePassword}
-                  />
-                  <input
-                    type="checkbox"
-                    id="showPassword"
-                    onClick={this.onCheckBox}
-                  />
-                  <ShowPasswordLabel theme={theme} htmlFor="showPassword">
-                    Show Password
-                  </ShowPasswordLabel>
-                  <div>
-                    <LoginButton type="sumbit">Login</LoginButton>
-                  </div>
-                  <ErrorMsg>{isError && `* ${errorMsg}`}</ErrorMsg>
-                </Form>
-              </LoginCardContainer>
-            </LoginContainer>
-          )
-        }}
-      </ThemeContext.Consumer>
+      <LoginFormContainer>
+        <FormContainer onSubmit={this.submitForm}>
+          <LoginWebsiteLogo
+            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+            alt="website logo"
+          />
+          <InputContainer>{this.renderUsernameField()}</InputContainer>
+          <InputContainer>{this.renderPasswordField()}</InputContainer>
+          <LoginButton type="submit">Login</LoginButton>
+          {showSubmitError && <ErrorMessage>*{errorMsg}</ErrorMessage>}
+        </FormContainer>
+      </LoginFormContainer>
     )
   }
 }
 
-export default login
+export default Login

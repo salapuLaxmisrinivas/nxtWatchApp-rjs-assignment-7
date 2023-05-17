@@ -1,44 +1,36 @@
-import Header from '../Header'
-import SideBar from '../SideBar'
-import ThemeContext from '../../Context/ThemeContext'
-
-import {
-  MainBody,
-  SidebarContainer,
-  NotFoundImage,
-  NotFoundContainer,
-  NotFoundText,
-} from './styledComponents'
+import {NotFoundContainer, Heading, Desc, Image} from './styledComponents'
+import NxtWatchContext from '../../Context/NxtWatchContext'
 
 const NotFound = () => (
-  <ThemeContext.Consumer>
+  <NxtWatchContext.Consumer>
     {value => {
       const {isDarkTheme} = value
-      const theme = isDarkTheme ? 'dark' : 'light'
 
-      const imgUrl = isDarkTheme
+      const imageUrl = isDarkTheme
         ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-not-found-dark-theme-img.png'
         : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-not-found-light-theme-img.png'
 
+      const isDarkHeading = isDarkTheme ? 'white' : 'black'
+
+      const isDarkDesc = isDarkTheme ? 'white' : 'black'
+
+      const isDarkContainer = isDarkTheme ? 'black' : 'white'
+
       return (
-        <div>
-          <Header />
-          <MainBody>
-            <SidebarContainer>
-              <SideBar />
-            </SidebarContainer>
-            <NotFoundContainer theme={theme}>
-              <NotFoundImage src={imgUrl} alt="not found" />
-              <NotFoundText theme={theme}>Page Not Found</NotFoundText>
-              <NotFoundText as="p" theme={theme}>
-                we are sorry, the page you requested could not be found.
-              </NotFoundText>
-            </NotFoundContainer>
-          </MainBody>
-        </div>
+        <>
+          <NotFoundContainer isDark={isDarkContainer}>
+            <Image src={imageUrl} alt="not found" />
+            <Heading isDark={isDarkHeading} isDarkTheme>
+              Page Not Found
+            </Heading>
+            <Desc isDark={isDarkDesc}>
+              we are sorry, the page you requested could not be found.
+            </Desc>
+          </NotFoundContainer>
+        </>
       )
     }}
-  </ThemeContext.Consumer>
+  </NxtWatchContext.Consumer>
 )
 
 export default NotFound

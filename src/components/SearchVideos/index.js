@@ -1,27 +1,25 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
+import {AiOutlineSearch} from 'react-icons/ai'
 
-import VideoCardTwo from '../GamingVideoItem'
-import Header from '../Header'
-
-import SideBar from '../LeftSection'
+import VideoItem from '../VideoItem'
 
 import NxtWatchContext from '../../Context/NxtWatchContext'
 
 import {
   SearchVideosContainer,
+  SearchContainer,
+  SearchInput,
   VideosContainer,
   ProductsLoaderContainer,
-  HomeStickyContainer,
-  HomeSideContainer,
-  HomeContainer,
   NotFoundContainer,
   Image,
   Heading,
   Desc,
-  Retry,
   NavLink,
+  Retry,
+  SearchIconButton,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -31,8 +29,10 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
-class Gaming extends Component {
+class SearchVideos extends Component {
   state = {
+    searchInput: '',
+    searchValue: '',
     apiStatus: apiStatusConstants.initial,
     searchedVideos: [],
   }
@@ -41,12 +41,29 @@ class Gaming extends Component {
     this.getSuggestionVideos()
   }
 
+  onChangeSearchInput = event => {
+    this.setState({searchInput: event.target.value})
+  }
+
+  onClickSearchButton = () => {
+    const {searchInput} = this.state
+    this.setState({searchValue: searchInput}, this.getSuggestionVideos)
+  }
+
+  onEnterClickSearch = event => {
+    if (event.key === 'Enter') {
+      const {searchInput} = this.state
+      this.setState({searchValue: searchInput}, this.getSuggestionVideos)
+    }
+  }
+
   getSuggestionVideos = async () => {
+    const {searchValue} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
     const jwtToken = Cookies.get('jwt_token')
-    const apiUrl = `https://apis.ccbp.in/videos/gaming`
+    const apiUrl = `https://apis.ccbp.in/videos/all?search=${searchValue}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -58,6 +75,10 @@ class Gaming extends Component {
       const fetchedData = await response.json()
       const updatedData = fetchedData.videos.map(each => ({
         id: each.id,
+        channel: {
+          name: each.channel.name,
+          profileImageUrl: each.channel.profile_image_url,
+        },
         publishedAt: each.published_at,
         thumbnailUrl: each.thumbnail_url,
         viewCount: each.view_count,
@@ -67,8 +88,7 @@ class Gaming extends Component {
         searchedVideos: updatedData,
         apiStatus: apiStatusConstants.success,
       })
-    }
-    if (response.ok !== true) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -84,21 +104,52 @@ class Gaming extends Component {
     </ProductsLoaderContainer>
   )
 
-  renderGamingVideos = () => (
+  renderHomeVideos = () => (
     <NxtWatchContext.Consumer>
       {value => {
         const {isDarkTheme} = value
-
-        const {searchedVideos} = this.state
+        const {searchInput, searchedVideos} = this.state
+        console.log(searchInput)
 
         const bgColor = isDarkTheme ? '#231f20' : '#f9f9f9'
+        const isVideosAvailable = searchedVideos.length === 0
 
-        return (
-          <SearchVideosContainer data-testid="gaming" bgColor={bgColor}>
-            <Heading>Gaming</Heading>
-            <VideosContainer bgColor={bgColor}>
+        return isVideosAvailable ? (
+          <>
+            <Image
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+              className="no-products-img"
+              alt="no videos"
+            />
+            <Heading className="no-products-heading">
+              No Search results found
+            </Heading>
+            <Desc className="no-products-description">
+              Try different key words or remove search filter
+            </Desc>
+            <Retry onClick={this.getSuggestionVideos}>Retry</Retry>
+          </>
+        ) : (
+          <SearchVideosContainer bgColor={bgColor}>
+            <SearchContainer>
+              <SearchInput
+                type="search"
+                placeholder="Search"
+                value={searchInput}
+                onChange={this.onChangeSearchInput}
+                onKeyDown={this.onEnterClickSearch}
+              />
+              <SearchIconButton
+                type="button"
+                data-testid="searchButton"
+                onClick={this.onClickSearchButton}
+              >
+                <AiOutlineSearch size={16} />
+              </SearchIconButton>
+            </SearchContainer>
+            <VideosContainer>
               {searchedVideos.map(each => (
-                <VideoCardTwo key={each.id} details={each} />
+                <VideoItem key={each.id} details={each} />
               ))}
             </VideosContainer>
           </SearchVideosContainer>
@@ -119,13 +170,7 @@ class Gaming extends Component {
         We are having some trouble to complete your request.Please try again.
       </Desc>
       <NavLink>
-        <Retry
-          className="button"
-          type="button"
-          onClick={this.getSuggestionVideos}
-        >
-          Retry
-        </Retry>
+        <Retry onClick={this.getSuggestionVideos}>Retry</Retry>
       </NavLink>
     </NotFoundContainer>
   )
@@ -135,7 +180,7 @@ class Gaming extends Component {
 
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderGamingVideos()
+        return this.renderHomeVideos()
 
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
@@ -147,30 +192,8 @@ class Gaming extends Component {
   }
 
   render() {
-    return (
-      <NxtWatchContext.Consumer>
-        {value => {
-          const {isDarkTheme} = value
-
-          const bgColor = isDarkTheme ? '#0f0f0f' : '#f9f9f9'
-
-          return (
-            <div data-testid="home">
-              <Header />
-              <HomeContainer data-testid="home" bgColor={bgColor}>
-                <HomeStickyContainer>
-                  <SideBar />
-                </HomeStickyContainer>
-                <HomeSideContainer bgColor={bgColor}>
-                  {this.renderAllVideos()}
-                </HomeSideContainer>
-              </HomeContainer>
-            </div>
-          )
-        }}
-      </NxtWatchContext.Consumer>
-    )
+    return <>{this.renderAllVideos()}</>
   }
 }
 
-export default Gaming
+export default SearchVideos

@@ -1,21 +1,10 @@
-import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import styled from 'styled-components'
 
 export const SearchVideosContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${props => props.bgColor};
-  overflow-y: scroll;
-`
-
-export const SearchInput = styled.input`
-  width: 250px;
-  border: 1px solid #64748b;
-  border-radius: 2px;
-  margin-left: 20px;
-  padding: 3px;
-  padding-right: 10px;
-  padding-left: 10px;
 `
 
 export const VideosContainer = styled.ul`
@@ -23,7 +12,31 @@ export const VideosContainer = styled.ul`
   flex-direction: row;
   list-style-type: none;
   flex-wrap: wrap;
-  background-color: ${props => props.bgColor};
+  padding: 0px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`
+
+export const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50%;
+  margin-top: 25px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+`
+
+export const SearchInput = styled.input`
+  width: 90%;
+  height: 30px;
+  border: 1px solid #64748b;
+  border-radius: 2px;
+  padding-right: 10px;
+  padding-left: 10px;
 `
 
 export const ProductsLoaderContainer = styled.div`
@@ -36,24 +49,6 @@ export const ProductsLoaderContainer = styled.div`
   }
 `
 
-export const HomeStickyContainer = styled.div`
-  position: sticky;
-  position: -webkit-sticky;
-`
-export const HomeSideContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  width: 100%;
-  background-color: ${props => props.bgColor};
-`
-
-export const HomeContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
-  background-color: ${props => props.bgColor};
-`
 export const NotFoundContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -93,4 +88,8 @@ export const Retry = styled.button`
   padding: 15px;
   color: blue;
   cursor: pointer;
+`
+export const SearchIconButton = styled.button`
+  height: 30px;
+  width: 10%;
 `

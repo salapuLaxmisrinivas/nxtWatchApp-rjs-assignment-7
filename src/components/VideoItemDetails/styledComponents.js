@@ -1,151 +1,140 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
-export const MainBody = styled.div`
-  @media screen and (min-width: 768px) {
-    display: flex;
-    flex-direction: row;
-  }
-`
-
-export const SidebarContainer = styled.div`
-  display: none;
-  @media screen and (min-width: 768px) {
-    display: block;
-  }
-`
-
-export const FailureContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-  margin: 10px;
-`
-
-export const FailureImg = styled.img`
-  width: 80%;
-  padding-top: 15px;
-
-  @media screen and (min-width: 768px) {
-    width: 50%;
-  }
-`
-
-export const FailureText = styled.h1`
-  margin: 0px;
-  padding: 5px;
-  color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#181818')};
-`
-export const RetryButton = styled.button`
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  width: 100px;
-  height: 30px;
-  margin-top: 10px;
-  border-radius: 5px;
-`
-export const LoaderContainer = styled.div`
-  text-align: center;
-`
-
-export const VideoItemDetailsContainer = styled.div`
-  height: 90vh;
-  overflow-x: auto;
-  background-color: ${props =>
-    props.theme === 'dark' ? '#0f0f0f' : '#f9f9f9'};
-  flex-grow: 1;
-  padding: 15px;
-  padding-bottom: 30px;
-  @media screen and (max-width: 768px) {
-    min-height: 90vh;
-  }
-`
-
-export const VideoDetailContainer = styled.div`
-  height: 100%;
-`
-
-export const PlayerContainer = styled.div`
-  height: 40%;
-  @media screen and (min-width: 768px) {
-    height: 70%;
-    padding: 20px 20px 0px 20px;
-  }
-`
-
-export const VideoTextContainer = styled.div`
-  margin: 0px;
-  @media screen and (min-width: 768px) {
-    padding-left: 20px;
-  }
-`
-
-export const VideoTitle = styled.p`
-  margin: 0px;
-  margin-top: 8px;
-  font-weight: 500;
-  font-size: 20px;
-  font-family: Roboto;
-  color: ${props => (props.theme === 'dark' ? 'white' : '#0f0f0f')};
-  @media screen and (min-width: 768px) {
-    font-size: 24px;
-  }
-`
-
-export const LikesAndViewsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 10px;
-  color: #475569;
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-right: 20px;
-  }
-`
-
-export const ViewsAndPostedContainer = styled.div`
+export const HomeContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100vw;
+`
+
+export const ProductsLoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  @media screen and (min-width: 768px) {
+    width: 70%;
+  }
+`
+export const VideoDetailsSideContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  width: 100%;
+  align-items: center;
+`
+
+export const VideoDetailsTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 90%;
+`
+
+export const VideoDetailsTitle = styled.p`
+  font-family: 'Roboto';
+  color: #181818;
+  margin-left: 10px;
+  font-weight: bold;
+`
+
+export const ViewsDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+`
+export const LikesContainer = styled.div`
+  display: flex;
 `
 
 export const ViewsText = styled.p`
-  margin: 0px 10px 0px 0px;
-`
-export const Button = styled.button`
-  background-color: transparent;
-  border: none;
-  font-weight: 500;
+  color: ${props => props.color};
   font-family: Roboto;
-  font-size: 14px;
-  padding: 0px;
-  margin-right: 10px;
-  margin-top: 10px;
-  padding-bottom: 10px;
-  color: ${props => (props.theme === 'active' ? '#2563eb' : '#64748b')};
+  margin-left: 10px;
 `
 
-export const ChannelLogo = styled.img`
-  width: 50px;
+export const IconContainer = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0px none;
+  color: ${props => props.color};
 `
-export const ChannelDetails = styled.div`
+
+export const HorizontalLine = styled.hr`
+  background-color: #181818;
+  color: #181818;
+  width: 100%;
+  margin: 15px;
+`
+export const ChannelContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-top: 10px;
+`
+export const ChannelLogo = styled.img`
+  height: 50px;
+  width: 50px;
+`
+export const LogoContainer = styled.div`
+  background-color: #cbd5e1;
+  border-radius: 40px;
+  padding: 10px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
-export const ChannelDetailsText = styled.p`
-  margin: 0px;
-  padding-left: 15px;
-  color: ${props => (props.theme === 'dark' ? 'white' : '#0f0f0f')};
+export const ChannelDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
 `
-export const ChannelDetailsText2 = styled(ChannelDetailsText)`
-  color: #64748b;
+
+export const NotFoundContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+  background-color: #fff;
 `
-export const VideoDescriptionText = styled.p`
-  color: ${props => (props.theme === 'dark' ? 'white' : '#0f0f0f')};
-  margin-bottom: 20px;
+
+export const Image = styled.img`
+  width: 300px;
+  margin: 20px;
+`
+
+export const Heading = styled.h1`
+  color: black;
+  text-align: center;
+  font-size: 30px;
+`
+
+export const Desc = styled.p`
+  color: black;
+  text-align: center;
+  font-size: 20px;
+`
+
+export const NavLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1e293b;
+  text-decoration: none;
+  margin-bottom: 32px;
+`
+
+export const Retry = styled.button`
+  padding: 15px;
+  color: blue;
+  cursor: pointer;
 `

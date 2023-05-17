@@ -1,90 +1,122 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
-export const MainBody = styled.div`
-  @media screen and (min-width: 768px) {
-    display: flex;
-    flex-direction: row;
-  }
-`
-
-export const SavedVideosMainContainer = styled.div`
-  background-color: ${props =>
-    props.theme === 'dark' ? '#0f0f0f' : '#f9f9f9'};
-`
-
-export const SidebarContainer = styled.div`
-  display: none;
-  @media screen and (min-width: 768px) {
-    display: block;
-  }
-`
-
-export const SavedVideosContainer = styled.div`
-  height: 90vh;
-  overflow-x: auto;
-
-  flex-grow: 1;
-  padding: 15px;
-`
-
-export const SavedMenuContainer = styled.div`
+export const SearchVideosContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  background-color: ${props => props.bgColor};
+  overflow-y: scroll;
+  padding: 30px;
+`
+
+export const SearchInput = styled.input`
+  width: 250px;
+  border: 1px solid #64748b;
+  border-radius: 2px;
+  margin-left: 60px;
+  padding: 3px;
+  padding-right: 10px;
+  padding-left: 10px;
+`
+
+export const VideosContainer = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+`
+
+export const TrendingHeadContainer = styled.div`
+  display: flex;
   align-items: center;
-  padding: 7px;
-  @media screen and (min-width: 768px) {
-    padding-left: 20px;
-  }
-  background-color: ${props =>
-    props.theme === 'dark' ? '#424242' : '#f8fafc'};
-`
-export const IconContainer = styled.div`
-  padding: 10px;
-  border-radius: 40px;
-  margin-right: 10px;
-  margin-left: 10px;
-  background-color: ${props =>
-    props.theme === 'dark' ? '#0f0f0f' : '#e2e8f0'};
-`
-export const MenuHeading = styled.h1`
-  color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#0f0f0f')};
-`
-export const VideosList = styled.ul`
-  list-style: none;
-  padding: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  height: 100px;
+  margin-left: 50px;
+  background-color: ${props => props.bgColor};
+  width: 100%;
 `
 
-export const NoVideosContainer = styled.div`
+export const TrendingLogo = styled.div`
+  background-color: #94a3b8;
+  border: 0px none;
+  border-radius: 50px;
+  height: 50px;
+  width: 50px;
   display: flex;
-  flex-direction: column;
-  text-align: center;
+  justify-content: center;
   align-items: center;
   margin: 10px;
 `
 
-export const NoVideosImg = styled.img`
-  width: 80%;
-  padding-top: 15px;
+export const TrendingHead = styled.h1`
+  color: ${props => props.color};
+  font-family: Roboto;
+  font-weight: bold;
+`
 
+export const ProductsLoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   @media screen and (min-width: 768px) {
-    width: 50%;
+    width: 70%;
   }
 `
 
-export const FailureText = styled.h1`
-  margin: 0px;
-  padding: 5px;
-  color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#181818')};
+export const HomeStickyContainer = styled.div`
+  position: sticky;
+  position: -webkit-sticky;
 `
-export const RetryButton = styled.button`
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  width: 100px;
-  height: 30px;
-  margin-top: 10px;
-  border-radius: 5px;
+export const HomeSideContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  width: 100%;
+  background-color: ${props => props.bgColor};
+`
+export const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  background-color: ${props => props.bgColor};
+`
+
+export const NotFoundContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+  background-color: ${props => props.bgColor};
+`
+
+export const Image = styled.img`
+  width: 250px;
+  margin: 10px;
+`
+
+export const Heading = styled.h1`
+  color: black;
+  font-size: 30px;
+  margin: 15px;
+  color: ${props => props.textColor};
+`
+
+export const Desc = styled.p`
+  color: ${props => props.textColor};
+  font-size: 20px;
+  margin-left: 15px;
+`
+export const NavLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1e293b;
+  text-decoration: none;
+  margin-bottom: 32px;
+`
+
+export const Retry = styled.button`
+  padding: 15px;
+  color: blue;
+  cursor: pointer;
 `
